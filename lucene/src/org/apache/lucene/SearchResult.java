@@ -12,7 +12,7 @@ public class SearchResult {
 	}
 	
 	public SearchResult() {
-		documents = new ArrayList<>();
+		documents = new ArrayList<GeneDocument>();
 		totalHits = 0;
 	}
 

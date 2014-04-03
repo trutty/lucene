@@ -150,6 +150,7 @@ public class IndexFiles {
 		
 		/** read until blank line */
 		while((line = br.readLine()) != null) {
+			/** concatenate coherent lines */
 			if (!line.isEmpty())
 				text += line;
 			else
@@ -210,6 +211,11 @@ public class IndexFiles {
 					br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
 					
 					/** read the file until end is reached */
+					// TODO add workaround
+					// br.read() positions the BufferedReader behind the first character
+					// in the worst case a a single character is omitted in the first field
+					// storing br.readLine() in a String and setting it to the content of the field does only work,
+					// if we rewrite searchUntilBlankLine() or at least add some if-else statements
 					while(br.read() != -1) {
 						
 						/** create new dataset */
@@ -218,14 +224,12 @@ public class IndexFiles {
 						/** store path of file in index*/
 						Field pathField = new StringField(Fieldname.PATH.toString(), file.getPath(), Field.Store.YES);
 						doc.add(pathField);
-
+						
 						doc.add(new StringField(Fieldname.SOURCE.toString(), searchUntillBlankLine(), Field.Store.YES));
 						doc.add(new StringField(Fieldname.TITLE.toString(), searchUntillBlankLine(), Field.Store.YES));
 						doc.add(new StringField(Fieldname.AUTHOR.toString(), searchUntillBlankLine(), Field.Store.YES));
 						
-						System.out.println("Origin1:");
 						String origin1 = br.readLine();
-						System.out.println(origin1);
 						doc.add(new StringField(Fieldname.ORIGIN1.toString(), origin1, Field.Store.YES));
 						
 						doc.add(new StringField(Fieldname.ORIGIN2.toString(), searchUntillBlankLine(), Field.Store.YES));
@@ -235,8 +239,7 @@ public class IndexFiles {
 						String pmid = searchUntillBlankLine();
 						/** remove all non-digit characters */
 						pmid = pmid.replaceAll("\\D+","");
-						long p = Long.parseLong(pmid);
-						doc.add(new LongField(Fieldname.PMID.toString(), p, Field.Store.YES));
+						doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));
 						
 						
 						if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {

@@ -171,29 +171,27 @@ public class IndexFiles {
 		
 			String text = "";
 			
-			if (field.equals(Fieldname.ORIGIN1))
+			if (field == Fieldname.ORIGIN1)
 				text = br.readLine();
 			else
 				text = searchUntillBlankLine();
 			
-			if (text.startsWith("PMID:") && !field.equals(Fieldname.PMID)) {
+			if (text.contains("PMID:") && !(field == Fieldname.PMID)) {
 				doc = null;
 				break;
 			}
 			
-			if (field.equals(Fieldname.CONTENT)) {
+			if (field == Fieldname.CONTENT) {
 				
-				String content = "";
+				String content = text;
 				String line = "";
 				/** add everything to the CONTENT as long as it does not contains "PMID:" -> new field */
-				while ( !(line = searchUntillBlankLine()).startsWith("PMID:") )
+				while ( !(line = searchUntillBlankLine()).contains("PMID:") )
 					content += line;
 				
 				doc.add(new TextField(Fieldname.CONTENT.toString(), content, Field.Store.YES));
 				
-			} else if (field.equals(Fieldname.PMID)) {
-				
-				String pmid = text;
+				String pmid = line;
 				/** remove all non-digit characters */
 				pmid = pmid.replaceAll("\\D+","");
 				doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));

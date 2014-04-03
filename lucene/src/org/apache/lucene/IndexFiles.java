@@ -163,6 +163,50 @@ public class IndexFiles {
 		return text;
 		
 	}
+	
+	
+	private static Document parseDocument(Document doc) throws IOException {
+		
+		for (Fieldname field : Fieldname.values()) {
+		
+			String text = "";
+			
+			if (field.equals(Fieldname.ORIGIN1))
+				text = br.readLine();
+			else
+				text = searchUntillBlankLine();
+			
+			if (text.startsWith("PMID:") && !field.equals(Fieldname.PMID)) {
+				doc = null;
+				break;
+			}
+			
+			if (field.equals(Fieldname.CONTENT)) {
+				
+				String content = "";
+				String line = "";
+				/** add everything to the CONTENT as long as it does not contains "PMID:" -> new field */
+				while ( !(line = searchUntillBlankLine()).startsWith("PMID:") )
+					content += line;
+				
+				doc.add(new TextField(Fieldname.CONTENT.toString(), content, Field.Store.YES));
+				
+			} else if (field.equals(Fieldname.PMID)) {
+				
+				String pmid = text;
+				/** remove all non-digit characters */
+				pmid = pmid.replaceAll("\\D+","");
+				doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));
+				
+			} else {
+				doc.add(new TextField(field.toString(), text, Field.Store.YES));
+			}
+			
+		}
+		
+		return doc;
+		
+	}
 
 	/**
 	 * Indexes the given file using the given writer, or if a directory is
@@ -226,34 +270,13 @@ public class IndexFiles {
 						Field pathField = new StringField(Fieldname.PATH.toString(), file.getPath(), Field.Store.YES);
 						doc.add(pathField);
 						
-						doc.add(new StringField(Fieldname.SOURCE.toString(), searchUntillBlankLine(), Field.Store.YES));
-						doc.add(new StringField(Fieldname.TITLE.toString(), searchUntillBlankLine(), Field.Store.YES));
-						doc.add(new StringField(Fieldname.AUTHOR.toString(), searchUntillBlankLine(), Field.Store.YES));
-						
-						/** ORIGIN1 has only one line so just do br.readLine() */
-						String origin1 = br.readLine();
-						doc.add(new StringField(Fieldname.ORIGIN1.toString(), origin1, Field.Store.YES));
-						
-						doc.add(new StringField(Fieldname.ORIGIN2.toString(), searchUntillBlankLine(), Field.Store.YES));
-						
-						String content = "";
-						String text = "";
-						/** add everything to the CONTENT as long as it does not contains "PMID:" -> new field */
-						while ( !(text = searchUntillBlankLine()).contains("PMID:") )
-							content += text;
-						
-						doc.add(new TextField(Fieldname.CONTENT.toString(), content, Field.Store.YES));
-						
-						String pmid = text;
-						/** remove all non-digit characters */
-						pmid = pmid.replaceAll("\\D+","");
-						doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));
-						
+						doc = parseDocument(doc);
 						
 						if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 							/** New index, so we just add the document */
 							System.out.println("adding " + file);
-							writer.addDocument(doc);
+							if (doc != null)
+								writer.addDocument(doc);
 						} else {
 							/** Existing index so replace the old one matching the exact path, if present */
 							System.out.println("updating " + file);

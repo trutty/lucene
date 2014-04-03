@@ -171,10 +171,14 @@ public class IndexFiles {
 		
 			String text = "";
 			
-			if (field == Fieldname.ORIGIN1)
-				text = br.readLine();
-			else
-				text = searchUntillBlankLine();
+			//do {
+				if (field == Fieldname.ORIGIN1)
+					text = br.readLine();
+				else
+					text = searchUntillBlankLine();
+			
+			//} while (text.startsWith("["));
+							
 			
 			if (text.contains("PMID:") && !(field == Fieldname.PMID)) {
 				doc = null;

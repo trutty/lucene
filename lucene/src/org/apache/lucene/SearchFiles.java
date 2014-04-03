@@ -45,6 +45,12 @@ public class SearchFiles implements SearchInterface {
 	private static IndexReader reader = null;
 	private static IndexSearcher searcher = null;
 
+	public static void main(String [] argv){
+		SearchFiles searchFile = new SearchFiles();
+		SearchResult searchResult = searchFile.search("is",1,10);
+		System.out.println(searchResult.getTotalHits());
+	}
+	
 	private static void initIndexSearcher() {
 		if (reader == null) {
 			try {
@@ -100,7 +106,8 @@ public class SearchFiles implements SearchInterface {
 			}
 
 			Query query = parser.parse(queryString);
-
+			System.out.println("Query: " + query.toString(fieldnames[0]));
+			
 			searchResult = doPagingSearch(searcher, query, startResult, numberOfResults);
 
 		} catch (IOException e) {
@@ -131,11 +138,11 @@ public class SearchFiles implements SearchInterface {
 		int requestedResults = offset + numberOfResults - 1;
 
 		TopDocs results = searcher.search(query, requestedResults);
-
+		
 		int numTotalHits = results.totalHits;
 
 		ScoreDoc[] hits = results.scoreDocs;
-
+		System.out.println(hits.length);
 		SearchResult searchResult = new SearchResult();
 
 		searchResult.setTotalHits(numTotalHits);

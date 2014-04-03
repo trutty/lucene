@@ -34,9 +34,9 @@ public class GUI extends JFrame implements ListSelectionListener {
 	private SearchInterface search;
 	private JPanel contentPane;
 	private JTextField txtSearch;
-	private JComboBox<String> comboBoxFields;
+	private JComboBox comboBoxFields;
 	private JSplitPane splitPane;
-	private JList<String> listResults;
+	private JList listResults;
 	private JPanel panel;
 	private JTextField txtPage;
 	private JTextField txtResultsPerPage;
@@ -114,7 +114,7 @@ public class GUI extends JFrame implements ListSelectionListener {
 		for (Fieldname f : Fieldname.values()) {
 			comboItems.add(f.name());
 		}
-		comboBoxFields = new JComboBox<String>(comboItems);
+		comboBoxFields = new JComboBox(comboItems);
 		GridBagConstraints gbc_comboBoxFields = new GridBagConstraints();
 		gbc_comboBoxFields.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxFields.gridx = 1;
@@ -136,7 +136,7 @@ public class GUI extends JFrame implements ListSelectionListener {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		panel.setLayout(gbl_panel);
 
-		listResults = new JList<String>();
+		listResults = new JList();
 		listResults.addListSelectionListener(this);
 		GridBagConstraints gbc_listResults = new GridBagConstraints();
 		gbc_listResults.weighty = 1.0;

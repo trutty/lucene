@@ -49,7 +49,8 @@ public class GUI extends JFrame implements ListSelectionListener {
 		this.search = search;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(550, 500);
+		setSize(1000, 800);
+		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2
 				- this.getSize().height / 2);
 		setTitle("Lucene Humen Gene Search");

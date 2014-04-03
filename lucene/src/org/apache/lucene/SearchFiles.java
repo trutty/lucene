@@ -45,16 +45,18 @@ public class SearchFiles implements SearchInterface {
 	private static IndexReader reader = null;
 	private static IndexSearcher searcher = null;
 
-	public static void main(String [] argv){
+	public static void main(String[] argv) {
 		SearchFiles searchFile = new SearchFiles();
-		SearchResult searchResult = searchFile.search("is",1,10);
-		System.out.println(searchResult.getTotalHits());
+		// SearchResult searchResult = searchFile.search("is",1,10);
+		// System.out.println(searchResult.getTotalHits());
+		new GUI(searchFile).setVisible(true);
 	}
-	
+
 	private static void initIndexSearcher() {
 		if (reader == null) {
 			try {
-				reader = DirectoryReader.open(FSDirectory.open(new File(index)));
+				reader = DirectoryReader
+						.open(FSDirectory.open(new File(index)));
 				searcher = new IndexSearcher(reader);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -67,7 +69,8 @@ public class SearchFiles implements SearchInterface {
 	}
 
 	@Override
-	public SearchResult search(String queryString, int startResult, int numberOfResults) {
+	public SearchResult search(String queryString, int startResult,
+			int numberOfResults) {
 		String[] fieldnames = new String[Fieldname.values().length - 1];
 
 		for (Fieldname f : Fieldname.values()) {
@@ -75,21 +78,23 @@ public class SearchFiles implements SearchInterface {
 				fieldnames[f.ordinal()] = f.toString();
 		}
 
-		return executeSearch(queryString, startResult, numberOfResults, fieldnames);
+		return executeSearch(queryString, startResult, numberOfResults,
+				fieldnames);
 	}
 
 	@Override
-	public SearchResult search(String queryString, int startResult, int numberOfResults,
-			Fieldname fieldname) {
+	public SearchResult search(String queryString, int startResult,
+			int numberOfResults, Fieldname fieldname) {
 
 		String[] fieldnames = new String[1];
 		fieldnames[0] = fieldname.toString();
 
-		return executeSearch(queryString, startResult, numberOfResults, fieldnames);
+		return executeSearch(queryString, startResult, numberOfResults,
+				fieldnames);
 	}
 
-	private SearchResult executeSearch(String queryString, int startResult, int numberOfResults,
-			String[] fieldnames) {
+	private SearchResult executeSearch(String queryString, int startResult,
+			int numberOfResults, String[] fieldnames) {
 		SearchResult searchResult = null;
 
 		initIndexSearcher();
@@ -97,7 +102,8 @@ public class SearchFiles implements SearchInterface {
 		try {
 			Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
 
-			QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_47, fieldnames, analyzer);
+			QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_47,
+					fieldnames, analyzer);
 
 			queryString = queryString.trim();
 
@@ -107,8 +113,9 @@ public class SearchFiles implements SearchInterface {
 
 			Query query = parser.parse(queryString);
 			System.out.println("Query: " + query.toString(fieldnames[0]));
-			
-			searchResult = doPagingSearch(searcher, query, startResult, numberOfResults);
+
+			searchResult = doPagingSearch(searcher, query, startResult,
+					numberOfResults);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -132,13 +139,13 @@ public class SearchFiles implements SearchInterface {
 	 * collected.
 	 * 
 	 */
-	private SearchResult doPagingSearch(IndexSearcher searcher, Query query, int offset,
-			int numberOfResults) throws IOException {
+	private SearchResult doPagingSearch(IndexSearcher searcher, Query query,
+			int offset, int numberOfResults) throws IOException {
 
 		int requestedResults = offset + numberOfResults - 1;
 
 		TopDocs results = searcher.search(query, requestedResults);
-		
+
 		int numTotalHits = results.totalHits;
 
 		ScoreDoc[] hits = results.scoreDocs;

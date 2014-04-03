@@ -68,3 +68,36 @@ mechanisms that participates in the development of AMD.
 
 PMID: 22762035  [PubMed - in process]
 
+
+78. Genome Dyn. 2012;7:92-107. Epub 2012 Jun 25.
+
+SINEs as Driving Forces in Genome Evolution.
+
+Schmitz J.
+
+Institute of Experimental Pathology, University of Münster, Münster, Germany.
+
+SINEs are short interspersed elements derived from cellular RNAs that
+repetitively retropose via RNA intermediates and integrate more or less randomly
+back into the genome. SINEs propagate almost entirely vertically within their
+host cells and, once established in the germline, are passed on from generation
+to generation. As non-autonomous elements, their reverse transcription (from RNA
+to cDNA) and genomic integration depends on the activity of the enzymatic
+machinery of autonomous retrotransposons, such as long interspersed elements
+(LINEs). SINEs are widely distributed in eukaryotes, but are especially
+effectively propagated in mammalian species. For example, more than a million
+Alu-SINE copies populate the human genome (approximately 13% of genomic space),
+and few master copies of them are still active. In the organisms where they
+occur, SINEs are a challenge to genomic integrity, but in the long term also can
+serve as beneficial building blocks for evolution, contributing to phenotypic
+heterogeneity and modifying gene regulatory networks. They substantially expand
+the genomic space and introduce structural variation to the genome. SINEs have
+the potential to mutate genes, to alter gene expression, and to generate new
+parts of genes. A balanced distribution and controlled activity of such
+properties is crucial to maintaining the organism's dynamic and thriving
+evolution.
+
+Copyright © 2012 S. Karger AG, Basel.
+
+PMID: 22759815  [PubMed - as supplied by publisher]
+

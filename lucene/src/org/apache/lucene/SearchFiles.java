@@ -17,19 +17,15 @@ package org.apache.lucene;
  * limitations under the License.
  */
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -41,28 +37,61 @@ import org.apache.lucene.util.Version;
 
 /** Simple command-line based search demo. */
 public class SearchFiles implements SearchInterface {
-	private String index = "index";
-	private String field = Fieldname.CONTENT.toString();
+	/*
+	 * Static variables, for performance reasons, to avoid unnecessary creation
+	 * of IndexSearcher
+	 */
+	private static String index = "index";
+	private static IndexReader reader = null;
+	private static IndexSearcher searcher = null;
+
+	private static void initIndexSearcher() {
+		if (reader == null) {
+			try {
+				reader = DirectoryReader.open(FSDirectory.open(new File(index)));
+				searcher = new IndexSearcher(reader);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 	private SearchFiles() {
 	}
 
 	@Override
-	public SearchResult search(String query, int startResult, int numberOfResults) {
-		// TODO Auto-generated method stub
-		return null;
+	public SearchResult search(String queryString, int startResult, int numberOfResults) {
+		String[] fieldnames = new String[Fieldname.values().length - 1];
+
+		for (Fieldname f : Fieldname.values()) {
+			if (f != Fieldname.PATH)
+				fieldnames[f.ordinal()] = f.toString();
+		}
+
+		return executeSearch(queryString, startResult, numberOfResults, fieldnames);
 	}
 
 	@Override
 	public SearchResult search(String queryString, int startResult, int numberOfResults,
 			Fieldname fieldname) {
-		try {
-			IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(index)));
-			IndexSearcher searcher = new IndexSearcher(reader);
 
+		String[] fieldnames = new String[1];
+		fieldnames[0] = fieldname.toString();
+
+		return executeSearch(queryString, startResult, numberOfResults, fieldnames);
+	}
+
+	private SearchResult executeSearch(String queryString, int startResult, int numberOfResults,
+			String[] fieldnames) {
+		SearchResult searchResult = null;
+
+		initIndexSearcher();
+
+		try {
 			Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
 
-			QueryParser parser = new QueryParser(Version.LUCENE_47, fieldname.toString(), analyzer);
+			QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_47, fieldnames, analyzer);
 
 			queryString = queryString.trim();
 
@@ -71,26 +100,18 @@ public class SearchFiles implements SearchInterface {
 			}
 
 			Query query = parser.parse(queryString);
-			
-			System.out.println("Searching for: " + query.toString(field));
 
-			doPagingSearch(searcher, query, startResult, numberOfResults);
-
-			reader.close();
+			searchResult = doPagingSearch(searcher, query, startResult, numberOfResults);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}catch (ParseException e) {
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
-	}
 
-	/** Simple command-line based search demo. */
-	public static void main(String[] args) throws Exception {
-
+		return searchResult;
 	}
 
 	/**
@@ -104,7 +125,7 @@ public class SearchFiles implements SearchInterface {
 	 * collected.
 	 * 
 	 */
-	public static void doPagingSearch(IndexSearcher searcher, Query query, int offset,
+	private SearchResult doPagingSearch(IndexSearcher searcher, Query query, int offset,
 			int numberOfResults) throws IOException {
 
 		int requestedResults = offset + numberOfResults - 1;
@@ -123,14 +144,18 @@ public class SearchFiles implements SearchInterface {
 
 		for (int i = offset - 1; i < end; i++) {
 			GeneDocument geneDoc = new GeneDocument();
-			
+
 			Document doc = searcher.doc(hits[i].doc);
-			
-			for(Fieldname f: Fieldname.values()){
-				if(doc.get(f.toString()) != null)
+
+			for (Fieldname f : Fieldname.values()) {
+				if (doc.get(f.toString()) != null)
 					geneDoc.set(f, doc.get(f.toString()));
 			}
+
+			searchResult.addGeneDocument(geneDoc);
 		}
+
+		return searchResult;
 	}
 
 }

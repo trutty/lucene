@@ -7,7 +7,8 @@ public enum Fieldname {
 	ORIGIN1 ("origin1"), 
 	ORIGIN2 ("origin2"),
 	CONTENT ("content"),
-	PMID ("PMID");
+	PMID ("PMID"),
+	PATH ("path");
 	
 	private final String name;
 	

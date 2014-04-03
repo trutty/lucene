@@ -1,5 +1,6 @@
 package org.apache.lucene;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResult {
@@ -8,6 +9,11 @@ public class SearchResult {
 
 	public List<GeneDocument> getDocuments() {
 		return documents;
+	}
+	
+	public SearchResult() {
+		documents = new ArrayList<>();
+		totalHits = 0;
 	}
 
 	public int getTotalHits() {
@@ -20,5 +26,9 @@ public class SearchResult {
 
 	public void setTotalHits(int totalHits) {
 		this.totalHits = totalHits;
+	}
+	
+	public void addGeneDocument(GeneDocument document){
+		documents.add(document);
 	}
 }

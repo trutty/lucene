@@ -23,6 +23,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -157,7 +158,7 @@ public class IndexFiles {
 				break;
 		}
 		
-		System.out.println(text);
+		//System.out.println(text);
 		
 		return text;
 		
@@ -229,14 +230,21 @@ public class IndexFiles {
 						doc.add(new StringField(Fieldname.TITLE.toString(), searchUntillBlankLine(), Field.Store.YES));
 						doc.add(new StringField(Fieldname.AUTHOR.toString(), searchUntillBlankLine(), Field.Store.YES));
 						
+						/** ORIGIN1 has only one line so just do br.readLine() */
 						String origin1 = br.readLine();
 						doc.add(new StringField(Fieldname.ORIGIN1.toString(), origin1, Field.Store.YES));
 						
 						doc.add(new StringField(Fieldname.ORIGIN2.toString(), searchUntillBlankLine(), Field.Store.YES));
-						doc.add(new StringField(Fieldname.CONTENT.toString(), searchUntillBlankLine(), Field.Store.YES));
 						
-						System.out.println("PMID:");
-						String pmid = searchUntillBlankLine();
+						String content = "";
+						String text = "";
+						/** add everything to the CONTENT as long as it does not contains "PMID:" -> new field */
+						while ( !(text = searchUntillBlankLine()).contains("PMID:") )
+							content += text;
+						
+						doc.add(new TextField(Fieldname.CONTENT.toString(), content, Field.Store.YES));
+						
+						String pmid = text;
 						/** remove all non-digit characters */
 						pmid = pmid.replaceAll("\\D+","");
 						doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));

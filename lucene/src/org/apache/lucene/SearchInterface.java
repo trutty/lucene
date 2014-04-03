@@ -1,7 +1,5 @@
 package org.apache.lucene;
 
-import java.util.List;
-
 public interface SearchInterface {
 
 	/**
@@ -10,7 +8,7 @@ public interface SearchInterface {
 	 * @param query
 	 *            Query string to search for
 	 * @param startResult
-	 *            Number of the fist result which should be returned, first
+	 *            Number of the first result which should be returned, first
 	 *            result is 1
 	 * @param numberOfResults
 	 *            Number of results

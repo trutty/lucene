@@ -3,7 +3,37 @@ package org.apache.lucene;
 import java.util.List;
 
 public interface SearchInterface {
-	public List<SearchResult> search(String query);
-	
-	public List<SearchResult> search(String query, Fieldname fieldname);
+
+	/**
+	 * Run lucene search on default/all fields
+	 * 
+	 * @param query
+	 *            Query string to search for
+	 * @param startResult
+	 *            Number of the fist result which should be returned, first
+	 *            result is 1
+	 * @param numberOfResults
+	 *            Number of results
+	 * @return Object of class SearchResult containing the found documents and
+	 *         some statistics
+	 */
+	public SearchResult search(String query, int startResult, int numberOfResults);
+
+	/**
+	 * Run lucene search on default/all fields
+	 * 
+	 * @param query
+	 *            Query string to search for
+	 * @param startResult
+	 *            Number of the fist result which should be returned, first
+	 *            result is 1
+	 * @param numberOfResults
+	 *            Number of results
+	 * @param fieldname
+	 *            Name of the field to run the query on
+	 * @return Object of class SearchResult containing the found documents and
+	 *         some statistics
+	 */
+	public SearchResult search(String query, int startResult, int numberOfResults,
+			Fieldname fieldname);
 }

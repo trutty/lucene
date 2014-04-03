@@ -189,12 +189,17 @@ public class IndexFiles {
 				while ( !(line = searchUntillBlankLine()).contains("PMID:") )
 					content += line;
 				
+				int index = line.indexOf("PMID:");
+				String addToContent = line.substring(0, index);
+				line = line.substring(index, line.length()-1);
+				
+				content += addToContent;
 				doc.add(new TextField(Fieldname.CONTENT.toString(), content, Field.Store.YES));
 				
 				String pmid = line;
 				/** remove all non-digit characters */
 				pmid = pmid.replaceAll("\\D+","");
-				System.out.println("PMID: " + pmid + " xxxxx "+ line);
+				//System.out.println("PMID: " + pmid + " xxxxx "+ line);
 				doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));
 				
 			} else if (field == Fieldname.PATH) {

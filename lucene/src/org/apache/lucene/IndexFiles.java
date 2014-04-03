@@ -194,11 +194,14 @@ public class IndexFiles {
 				String pmid = line;
 				/** remove all non-digit characters */
 				pmid = pmid.replaceAll("\\D+","");
+				System.out.println("PMID: " + pmid + " xxxxx "+ line);
 				doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));
 				
-			} else {
-				doc.add(new TextField(field.toString(), text, Field.Store.YES));
+			} else if (field == Fieldname.PATH) {
+				//TODO better solution
 			}
+			else if (field != Fieldname.PMID)
+					doc.add(new TextField(field.toString(), text, Field.Store.YES));
 			
 		}
 		

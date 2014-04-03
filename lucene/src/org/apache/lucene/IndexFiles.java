@@ -21,6 +21,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
@@ -199,9 +200,7 @@ public class IndexFiles {
 				try {
 					fis = new FileInputStream(file);
 				} catch (FileNotFoundException fnfe) {
-					// at least on windows, some temporary files raise this
-					// exception with an "access denied" message
-					// checking if the file can be read doesn't help
+					/** some temp files raise this exception */
 					return;
 				}
 
@@ -236,7 +235,8 @@ public class IndexFiles {
 						String pmid = searchUntillBlankLine();
 						/** remove all non-digit characters */
 						pmid = pmid.replaceAll("\\D+","");
-						doc.add(new StringField(Fieldname.PMID.toString(), pmid, Field.Store.YES));
+						long p = Long.parseLong(pmid);
+						doc.add(new LongField(Fieldname.PMID.toString(), p, Field.Store.YES));
 						
 						
 						if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {

@@ -1,0 +1,70 @@
+
+1. Int J Ophthalmol. 2012;5(2):158-63. Epub 2012 Apr 18.
+
+In vitro transdifferentiation of corneal epithelial-like cells from human
+skin-derived precursor cells.
+
+Saichanma S, Bunyaratvej A, Sila-Asna M.
+
+Department of Pathology, Faculty of Medicine, Ramathibodi Hospital, Mahidol
+
+The damage of human corneal cells encounter with the problem of availability of
+corneal cells for replacement. Limitation of the source of corneal cells has been
+realized. An attempt of development of corneal epithelial-like cells from the
+human skin-derived precursor (hSKPs) has been made in this study. Combination of
+three essential growth factors: epidermal growth factor (EGF), keratinocyte
+growth factor (KGF) and hepatocyte growth factor (HGF) could demonstrate
+successfully induction of hSKPs to differentiation into corneal cells.The induced
+cells expressed the appearance of markers of corneal epithelial cells as shown by
+the presence of keratin 3 (K3) by antibody label and Western blot assay. The K3
+gene expression of induced hSKPs cells as shown by reverse
+transcription-polymerase chain reaction (RT-PCR) technology was also
+demonstrated. The presence of these markers at both gene and protein levels could
+lead to our conclusion that the directional transdifferentiation of hSKPs cells
+into corneal epithelial cells was successfully done under this cell induction
+protocol. The finding shows a newly available stem cell source can be obtained
+from easily available skin. Cells from autologous human skin might be used for
+corneal disorder treatment in future clinical application.
+
+PMID: 22762041  [PubMed - in process]
+
+
+2. Int J Ophthalmol. 2012;5(2):125-32. Epub 2012 Apr 18.
+
+Age-related maculopathy susceptibility 2 participates in the phagocytosis
+functions of the retinal pigment epithelium.
+
+Xu YT, Wang Y, Chen P, Xu HF.
+
+School of Medicine and Life Sciences of Shandong Academy of Medical Sciences,
+University of Jinan, Jinan 250022, Shandong Province, China.
+
+AIM: Age-related macular degeneration (AMD) is a multifactorial disease and a
+prevalent cause of visual impairment in developed countries. Many studies suggest
+that age-related maculopathy susceptibility 2 (ARMS2) is a second major
+susceptibility gene for AMD. At present, there is no functional information on
+this gene. Therefore, the purpose of the present study was to detect the
+expression of ARMS2 in retinal pigment epithelium (RPE) cells and to investigate
+the effect of ARMS2 on the phagocytosis function of RPE cells.
+METHODS: Immunofluorescence and reverse transcriptase PCR were used to
+demonstrate the presence and location of ARMS2 in ARPE-19 (human retinal pigment
+epithelial cell line, ATCC, catalog No.CRL-2302) cells. siRNA was used to knock
+down ARMS2 mRNA, and the effects of the knockdown on the phagocytosis function of
+the ARPE-19 cells were evaluated via Fluorescence Activated Cell Sorting (FACS).
+RESULTS: ARMS2 was present in ARPE-19 cells, localized in the cytosol of the
+perinuclear region. The expression of ARMS2 mRNA (messenger RNA) in ARPE-19 cells
+transfected with ARMS2-siRNA (small interfering RNA, 0.73±0.08) was decreased
+compared with normal cells (1.00±0.00) or with cells transfected with scrambled
+siRNA (0.95±0.13) (P<0.05). After incubation of RPE cells with a latex beads
+medium for 12, 18, or 24 hours, the fluorescence intensities were 38.04±1.02,
+68.92±0.92, and 78.00±0.12 in the ARMS2-siRNA-transfected groups, respectively,
+and 77.98±5.43, 94.87±0.60, and 98.30±0.11 in the scrambled siRNA-transfected
+groups, respectively. The fluorescent intensities of the same time points in the
+two groups were compared using Student's t-test, and the p values were all less
+than 0.001 at the three different time points.
+CONCLUSION: There is endogenous expression of ARMS2 in ARPE-19 cells. ARMS2 plays
+a role in the phagocytosis function of RPE cells, and this role may be one of the
+mechanisms that participates in the development of AMD.
+
+PMID: 22762035  [PubMed - in process]
+

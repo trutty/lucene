@@ -9,9 +9,21 @@ public class GeneDocument {
 	private String origin2;
 	private String content;
 	private int PMID;
+	private String path;
+	
+	public GeneDocument(){
+		this.source = "";
+		this.title = "";
+		this.author = "";
+		this.origin1 = "";
+		this.origin2 = "";
+		this.content = "";
+		this.PMID = -1;
+		this.path = "";
+	}
 
 	public GeneDocument(String source, String title, String author,
-			String origin1, String origin2, String content, int PMID) {
+			String origin1, String origin2, String content, int PMID, String path) {
 		super();
 		this.source = source;
 		this.title = title;
@@ -20,8 +32,37 @@ public class GeneDocument {
 		this.origin2 = origin2;
 		this.content = content;
 		this.PMID = PMID;
+		this.path = path;
 	}
 
+	public void set(Fieldname f, Object value){
+		switch(f){
+		case SOURCE:
+			setSource(value.toString());
+			break;
+		case TITLE:
+			setTitle(value.toString());
+			break;
+		case AUTHOR:
+			setAuthor(value.toString());
+			break;
+		case ORIGIN1:
+			setOrigin1(value.toString());
+			break;
+		case ORIGIN2:
+			setOrigin2(value.toString());
+			break;
+		case CONTENT:
+			setContent(value.toString());
+			break;
+		case PMID:
+			setPMID((Integer)value);
+			break;
+		case PATH:
+			setPath(value.toString());
+			break;
+		}
+	}
 	public String getSource() {
 		return source;
 	}
@@ -48,6 +89,10 @@ public class GeneDocument {
 
 	public int getPMID() {
 		return PMID;
+	}
+	
+	public String getPath(){
+		return path;
 	}
 
 	public void setSource(String source) {
@@ -76,5 +121,9 @@ public class GeneDocument {
 
 	public void setPMID(int PMID) {
 		this.PMID = PMID;
+	}
+	
+	public void setPath(String path){
+		this.path = path;
 	}
 }

@@ -217,7 +217,7 @@ public class IndexFiles {
 						Document doc = new Document();
 						
 						/** store path of file in index*/
-						Field pathField = new StringField("path", file.getPath(), Field.Store.YES);
+						Field pathField = new StringField(Fieldname.PATH.toString(), file.getPath(), Field.Store.YES);
 						doc.add(pathField);
 
 						doc.add(new StringField(Fieldname.SOURCE.toString(), searchUntillBlankLine(), Field.Store.YES));

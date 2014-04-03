@@ -1,4 +1,4 @@
-package org.apache.lucene.chris;
+package org.apache.lucene;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

@@ -56,7 +56,7 @@ public class GeneDocument {
 			setContent(value.toString());
 			break;
 		case PMID:
-			setPMID((Integer)value);
+			setPMID(Integer.parseInt(value.toString()));
 			break;
 		case PATH:
 			setPath(value.toString());

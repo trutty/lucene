@@ -1,13 +1,14 @@
 package org.apache.lucene;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -65,6 +66,24 @@ public class GUI extends JFrame implements ListSelectionListener {
 
 		txtSearch = new JTextField();
 		txtSearch.setToolTipText("Search query");
+		txtSearch.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					startSearch();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+		});
 		GridBagConstraints gbc_txtSearch = new GridBagConstraints();
 		gbc_txtSearch.ipady = 7;
 		gbc_txtSearch.weightx = 1.0;
@@ -342,7 +361,8 @@ public class GUI extends JFrame implements ListSelectionListener {
 			gbc_lblContent.gridy = 5;
 			this.add(lblContent, gbc_lblContent);
 
-			JLabel lblContentContent = new JLabel(content.getContent());
+			JLabel lblContentContent = new JLabel("<html>"
+					+ content.getContent() + "</html>");
 			GridBagConstraints gbc_lblContentContent = new GridBagConstraints();
 			gbc_lblContentContent.fill = GridBagConstraints.BOTH;
 			gbc_lblContentContent.anchor = GridBagConstraints.NORTHWEST;

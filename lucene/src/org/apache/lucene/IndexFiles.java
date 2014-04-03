@@ -21,9 +21,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -145,7 +143,7 @@ public class IndexFiles {
 	 * @throws IOException
 	 */
 	static private String searchUntillBlankLine() throws IOException {
-		
+			
 		String line = "";
 		String text = "";
 		
@@ -156,6 +154,8 @@ public class IndexFiles {
 			else
 				break;
 		}
+		
+		System.out.println(text);
 		
 		return text;
 		
@@ -220,26 +220,22 @@ public class IndexFiles {
 						Field pathField = new StringField("path", file.getPath(), Field.Store.YES);
 						doc.add(pathField);
 
-						/** skip first blank line */
-						String firstLine = br.readLine();
-						if (firstLine.isEmpty())
-							firstLine = searchUntillBlankLine();
-						
-						doc.add(new StringField(Fieldname.SOURCE.toString(), firstLine, Field.Store.YES));
+						doc.add(new StringField(Fieldname.SOURCE.toString(), searchUntillBlankLine(), Field.Store.YES));
 						doc.add(new StringField(Fieldname.TITLE.toString(), searchUntillBlankLine(), Field.Store.YES));
 						doc.add(new StringField(Fieldname.AUTHOR.toString(), searchUntillBlankLine(), Field.Store.YES));
-						doc.add(new StringField(Fieldname.ORIGIN1.toString(), br.readLine(), Field.Store.YES));
 						
-						String origin2 = br.readLine();
-						/** if line beneath first origin is not empty, there is a second origin */
-						if (!origin2.isEmpty())
-							doc.add(new StringField(Fieldname.ORIGIN2.toString(), br.readLine(), Field.Store.YES));
+						System.out.println("Origin1:");
+						String origin1 = br.readLine();
+						System.out.println(origin1);
+						doc.add(new StringField(Fieldname.ORIGIN1.toString(), origin1, Field.Store.YES));
 						
+						doc.add(new StringField(Fieldname.ORIGIN2.toString(), searchUntillBlankLine(), Field.Store.YES));
 						doc.add(new StringField(Fieldname.CONTENT.toString(), searchUntillBlankLine(), Field.Store.YES));
 						
+						System.out.println("PMID:");
 						String pmid = searchUntillBlankLine();
 						/** remove all non-digit characters */
-						pmid = pmid.replace("[^\\.0123456789]","");
+						pmid = pmid.replaceAll("\\D+","");
 						doc.add(new StringField(Fieldname.PMID.toString(), pmid, Field.Store.YES));
 						
 						
@@ -248,7 +244,7 @@ public class IndexFiles {
 							System.out.println("adding " + file);
 							writer.addDocument(doc);
 						} else {
-							// Existing index so replace the old one matching the exact path, if present:
+							/** Existing index so replace the old one matching the exact path, if present */
 							System.out.println("updating " + file);
 							writer.updateDocument(new Term("path", file.getPath()), doc);
 						}

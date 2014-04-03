@@ -45,19 +45,6 @@ public class GUI extends JFrame implements ListSelectionListener {
 	private SearchResult searchResult;
 	private List<GeneDocument> documentIndex;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUI frame = new GUI(new MockSearch());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	public GUI(SearchInterface search) {
 		this.search = search;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -356,7 +343,7 @@ public class GUI extends JFrame implements ListSelectionListener {
 
 			JLabel lblContentContent = new JLabel(content.getContent());
 			GridBagConstraints gbc_lblContentContent = new GridBagConstraints();
-			gbc_lblContentContent.fill = GridBagConstraints.HORIZONTAL;
+			gbc_lblContentContent.fill = GridBagConstraints.BOTH;
 			gbc_lblContentContent.anchor = GridBagConstraints.NORTHWEST;
 			gbc_lblContentContent.insets = new Insets(0, 0, 5, 0);
 			gbc_lblContentContent.gridx = 1;

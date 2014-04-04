@@ -164,8 +164,14 @@ public class IndexFiles {
 		
 	}
 	
-	
-	private static Document parseDocument(Document doc) throws IOException {
+	/**
+	 * Parses and stores the content of each Document to the fields
+	 * @param doc The Document to which data is stored
+	 * @param file The input file which is being processed
+	 * @return The Document with all fields or null if relevant fields could not be found in the datasets
+	 * @throws IOException
+	 */
+	private static Document parseDocument(Document doc, File file) throws IOException {
 		
 		for (Fieldname field : Fieldname.values()) {
 		
@@ -179,8 +185,8 @@ public class IndexFiles {
 			
 			//} while (text.startsWith("["));
 							
-			
-			if (text.contains("PMID:") && !(field == Fieldname.PMID)) {
+			/** If relevant fields are missing, set document to null (do not store document) */
+			if (text.contains("PMID:") && field != Fieldname.PMID) {
 				doc = null;
 				break;
 			}
@@ -189,10 +195,14 @@ public class IndexFiles {
 				
 				String content = text;
 				String line = "";
-				/** add everything to the CONTENT as long as it does not contains "PMID:" -> new field */
+				/** add everything to the CONTENT as long as it does not contain "PMID:" -> new field */
 				while ( !(line = searchUntillBlankLine()).contains("PMID:") )
 					content += line;
 				
+				/** 
+				 * substract everything except PMID to the content
+				 * e.g PMCID or other weird stuff
+				 *  */
 				int index = line.indexOf("PMID:");
 				String addToContent = line.substring(0, index);
 				line = line.substring(index, line.length()-1);
@@ -203,11 +213,11 @@ public class IndexFiles {
 				String pmid = line;
 				/** remove all non-digit characters */
 				pmid = pmid.replaceAll("\\D+","");
-				//System.out.println("PMID: " + pmid + " xxxxx "+ line);
 				doc.add(new LongField(Fieldname.PMID.toString(), Long.parseLong(pmid), Field.Store.YES));
 				
 			} else if (field == Fieldname.PATH) {
-				//TODO better solution
+				/** store path of file in index*/
+				doc.add(new StringField(Fieldname.PATH.toString(), file.getPath(), Field.Store.YES));
 			}
 			else if (field != Fieldname.PMID)
 					doc.add(new TextField(field.toString(), text, Field.Store.YES));
@@ -275,12 +285,7 @@ public class IndexFiles {
 						
 						/** create new dataset */
 						Document doc = new Document();
-						
-						/** store path of file in index*/
-						Field pathField = new StringField(Fieldname.PATH.toString(), file.getPath(), Field.Store.YES);
-						doc.add(pathField);
-						
-						doc = parseDocument(doc);
+						doc = parseDocument(doc, file);
 						
 						if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 							/** New index, so we just add the document */
